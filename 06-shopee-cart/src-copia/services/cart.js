@@ -51,5 +51,36 @@ async function displaycart(userCart) {
     );
   });
 }
+async function addToWishlist(wishlist, item) {
+  wishlist.push(item);
+}
 
-export { addItem, calculateTotal, deleteItem, removeItem, displaycart };
+async function moveWishlistToCart(wishlist, cart, itemName) {
+  const index = wishlist.findIndex((item) => item.name === itemName);
+  if (index === -1) {
+    console.log("Item não encontrado na wishlist.");
+    return;
+  }
+  const item = wishlist[index];
+  wishlist.splice(index, 1); 
+  await addItem(cart, item); 
+}
+
+async function displayWishlist(wishlist) {
+  console.log("\nWishlist:");
+  wishlist.forEach((item, index) => {
+    console.log(`${index + 1}. ${item.name} - R$ ${item.price} | ${item.quantity}x`);
+  });
+}
+
+export {
+  addItem,
+  calculateTotal,
+  deleteItem,
+  removeItem,
+  displaycart,
+  addToWishlist,
+  moveWishlistToCart,
+  displayWishlist,
+};
+
