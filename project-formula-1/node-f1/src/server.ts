@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
 
+
 const server = fastify({ logger: true });
 
 server.register(cors, {
@@ -41,7 +42,23 @@ server.get("/drivers", async (request, response) => {
 interface DriverParams {
   id: string;
 }
-
+interface Teams{
+  name: string;
+}
+server.get<{Params: Teams}>(
+  "/teams/:name", 
+  async (request, response) =>{
+    const idname = request.params.name;
+    const team = teams.find((t) => t.name === idname)
+    if (!team){
+      response.type("aplication/json").code(204);
+      return { message: "Team not foud in the database"};
+    } else{
+      response.type("aplication/json").code(200);
+      return{ team}
+    }
+  }
+)
 server.get<{ Params: DriverParams }>(
   "/drivers/:id",
   async (request, response) => {
@@ -49,7 +66,7 @@ server.get<{ Params: DriverParams }>(
     const driver = drivers.find((d) => d.id === id);
 
     if (!driver) {
-      response.type("application/json").code(404);
+      response.type("application/json").code(204);
       return { message: "Driver Not Found" };
     } else {
       response.type("application/json").code(200);
