@@ -6,3 +6,10 @@ export const getClubService = async () => {
   const response = HttpResponse.ok(data);
   return response;
 };
+
+export const getClubsByIdService = async (id: number) => {
+  const data = await repository.findOneClub(id)
+  const response = HttpResponse.ok(data);
+  
+  return response;
+}
